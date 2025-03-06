@@ -18,26 +18,16 @@ public class ExpressionStack implements Iterable<Character> {
     public ExpressionStack(String str) {
         size = 0;
         charStack = new Stack<>();
-        push(')');
         push(str);
     }
 
     public ExpressionStack() {
         size = 0;
         charStack = new Stack<>();
-        push(')');
     }
 
-    // public void push(char c) {
-    //     if (!prioritizedOperators.contains(c)) {
-    //         charStack.push(c);
-    //     }
-    //     Stack.Node<Character> pre = charStack.first.next;
-    //     charStack.push(')');
-    // }
     public void push(char c) {
         size++;
-        System.out.println("Pushing " + String.valueOf(c));
         charStack.push(c);
     }
 
@@ -54,12 +44,49 @@ public class ExpressionStack implements Iterable<Character> {
             return;
         }
         int lastLetterIndex = str.length() - 1;
-        push(str.charAt(lastLetterIndex));
-        pushChars(str.substring(0, lastLetterIndex));
+        char currChar = str.charAt(lastLetterIndex);
+
+        if (prioritizedOperators.contains(currChar)) {
+            parenthesize(str, lastLetterIndex);
+        }
+        else {
+            push(currChar);
+            pushChars(str.substring(0, lastLetterIndex));
+        }
+
     }
 
-    private void parenthesize() {
+    private void parenthesize(String str, int i) {
 
+        // Insert the closing parenthesis
+        if (peek() == '(') {
+            charStack.instertAfter(')', ')');
+        }
+        else {charStack.instertAfter(')', charStack.first.data);}
+
+        // push the operator
+        push(str.charAt(i));                            // REFACTOR
+        i--;
+
+        // push the operand
+        System.out.println(str.charAt(i));
+        while (i >= 0 && Character.isDigit(str.charAt(i))) {
+            push(str.charAt(i));
+            i--;
+        }
+        // push opening parenthesis
+        push('(');
+
+        if (i < 0) {
+            return;
+        }
+
+        pushChars(str.substring(0, i + 1));
+    }
+
+    @Override
+    public String toString() {
+        return charStack.toString();
     }
 
     public Character pop() throws NoSuchElementException {
@@ -79,6 +106,7 @@ public class ExpressionStack implements Iterable<Character> {
         return size;
     }
 
+
     @Override
     public Iterator<Character> iterator() {
         return new ExpressionStackIterator();
@@ -88,7 +116,7 @@ public class ExpressionStack implements Iterable<Character> {
 
         @Override
         public boolean hasNext() {
-            return charStack.peek() != null;
+            return charStack.first != null;
         }
 
         @Override

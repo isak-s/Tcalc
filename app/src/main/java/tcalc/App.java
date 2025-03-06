@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 import expressionParser.Parser;
 
+import expressionParser.ExpressionTree;
+
 public class App {
     public String getGreeting() {
         return "Hello World!";
@@ -18,13 +20,25 @@ public class App {
         System.out.println("enter an expression. \n    ");
         String input = scan.nextLine();
 
+        double res = stackImplementation(input);
+
+        System.out.println("The result is: " + res);
+        scan.close();
+    }
+
+    public static double stackImplementation(String input) {
 
         Parser parser = new Parser(input);
 
-        double res = parser.evaluate();
+        return parser.evaluate();
+    }
 
-        System.out.println("The result is: " + res);
+    public static double treeImplementation(String input) {
+        ExpressionTree tree = new ExpressionTree();
 
-        scan.close();
+        tree.buildExpressionTree(input);
+
+        // Evaluate the expression
+        return tree.evaluateExpressionTree(tree.root);
     }
 }

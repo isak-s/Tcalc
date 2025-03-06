@@ -14,41 +14,44 @@ public class Parser {
     }
 
     public Double evaluate() {
-        expressionStack.push('(');
-        System.out.println(expressionStack.getSize());
-        return evaluateRecursively();
+        System.out.println(expressionStack);
+        return evaluateRecursively(0, '+');
     }
 
-    private Double evaluateRecursively() {
+    private Double evaluateRecursively(double res, char operator) {
+
+        System.out.print(res + " " + String.valueOf(operator) + " ");
 
         if (expressionStack.isEmpty()) {
-            System.out.println("base case");
-            return 1.0;
+            System.out.println("Bad expression");
+            return res;
         }
-        char curr = expressionStack.peek();
-        System.out.println(String.valueOf(curr));
-        if (Character.isDigit(curr)) {
-            return getNumberFromStack();
-        }
-        if (curr == '(') {
-            expressionStack.pop();
-            double left = evaluateRecursively();
-            char operand = getOperandFromStack();
-            double right = evaluateRecursively();
 
-            if (expressionStack.peek() == ')') {
-                expressionStack.pop();
-            }
-            return calculate(left, operand, right);
+        double operand;
+        if (expressionStack.peek() == '(') {
+            expressionStack.pop();
+            operand = evaluateRecursively(0, '+');
         }
-        double left = evaluateRecursively();
-        char operand = getOperandFromStack();
-        double right = evaluateRecursively();
-        return calculate(left, operand, right);
+        else {
+            operand = getNumberFromStack();
+        }
+        System.out.println(operand);
+
+        res = calculate(res, operator, operand);
+
+        if (expressionStack.isEmpty()) {
+            return res;
+        }
+        if (expressionStack.peek() == ')') {
+            expressionStack.pop();
+            return res;
+        }
+        operator = getOperatorFromStack();
+        return evaluateRecursively(res, operator);
     }
 
     private double calculate(double left, char operand, double right) {
-        System.out.println("calucalting: " + left + " " + String.valueOf(operand) + " " + right);
+        // System.out.println("calucalting: " + left + " " + String.valueOf(operand) + " " + right);
         switch (operand) {
             case '-':
                 return left - right;
@@ -74,12 +77,12 @@ public class Parser {
 
         double num = 0;
         Iterator<Character> itr = expressionStack.iterator();
-        while(Character.isDigit(expressionStack.peek())) {
+        while(itr.hasNext() && Character.isDigit(expressionStack.peek())) {
             num = num * 10 +  Character.getNumericValue(itr.next());
         }
         return num;
     }
-    private char getOperandFromStack() {
+    private char getOperatorFromStack() {
         char expresson = expressionStack.pop();
         for (char o : operators) {
             if (expresson == o) {

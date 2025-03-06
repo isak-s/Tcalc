@@ -35,6 +35,10 @@ public class Stack<E> {
         return first.data;
     }
 
+    public boolean isEmpty() {
+        return first == null;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -48,6 +52,16 @@ public class Stack<E> {
         return sb.toString();
     }
 
+    public void instertAfter(E thing, E existingThing) {
+
+        Node<E> node = first;
+        while (!node.data.equals(existingThing)) {
+            node = node.next;
+        }
+        Node<E> newNode = new Node<E>(thing);
+        newNode.next = node.next;
+        node.next = newNode;
+    }
 
 
     static public class Node<E> {
