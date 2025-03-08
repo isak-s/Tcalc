@@ -87,7 +87,7 @@ public class ExpressionStack extends Stack<Character> {
         Node<Character> node = first;
         if ((char) peek() != '(') {
             Node<Character> newNode = new Node<>(closing);
-            while(node.next != null && Character.isDigit(node.data)){
+            while(node.next != null && Character.isDigit(node.next.data)){
                 node = node.next;
             }
             newNode.next = node.next;
