@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import expressionParser.ExpressionStack;
+import expressionParser.Expression;
 
 public class testExpressionStack {
 
@@ -69,7 +70,100 @@ public class testExpressionStack {
     void testPopFromEmptyStack() {
         assertThrows(NoSuchElementException.class, () -> exprStack.pop());
     }
+    @Test
+    void testParenthesiseSingleDigitNumbers() {
+
+        exprStack.push("5 * 5 * 5");
+
+        assertEquals(exprStack.toString(), "(5*(5*5))");
+    }
+    @Test
+    void testParenthesiseMultiplicationsAndAdditions() {
+        exprStack.push("5 * 5  + 1 + 2 * 5");
+
+        assertEquals("(5*5)+1+(2*5)", exprStack.toString());
+    }
+    @Test
+    void testmanyParenthesese() {
+        exprStack.push("(((5 * ((5 + 2) - 2))))");
+
+        assertEquals(exprStack.toString(), "((((5*((5+2)-2)))))");
+    }
+    @Test
+    void testParenthesisOrdering() {
+        exprStack.push("1 - 5 * 5  + 1 + 2 * 5");
+
+        assertEquals("1-(5*5)+1+(2*5)", exprStack.toString());
+    }
+    @Test
+    void testAdditionParenthesis() {
+        exprStack.push("5 * (5 + 2) - 2");
+
+        assertEquals(exprStack.toString(), "(5*(5+2))-2");
+    }
+
+    // AI GENERATED TESTS
+        @Test
+        void testNestedParenthesesWithMultiplication() {
+            exprStack.push("(2 + 3) * (4 + 5)");
+
+            assertEquals(exprStack.toString(), "((2+3)*(4+5))");
+        }
+
+        @Test
+        void testMultipleMultiplicationsInSequence() {
+            exprStack.push("2 * 3 * 4 * 5");
+
+            assertEquals(exprStack.toString(), "(2*(3*(4*5)))");
+        }
+
+        @Test
+        void testMultipleMultiplicationsAndDivisions() {
+            exprStack.push("2 * 3 / 4 * 5");
+
+            assertEquals(exprStack.toString(), "(((2*3)/4)*5)");
+        }
+        @Test
+        void testMultipleMultiplicationsAndDivisionsWithParenthese() {
+            exprStack.push("((2 * 3) / 4) * 5");
+
+            assertEquals(exprStack.toString(), "(((((2*3))/4))*5)");
+        }
 
 
+        @Test
+        void testDivisionInsideParentheses() {
+            exprStack.push("(10 / 2) * (3 + 4)");
+
+            assertEquals(exprStack.toString(), "(((10/2))*(3+4))");
+        }
+
+        @Test
+        void testComplexExpressionWithDifferentOperators() {
+            exprStack.push("1 + 2 * 3 - 4 / 2 + 5");
+
+            assertEquals(exprStack.toString(), "1+(2*3)-(4/2)+5");
+        }
+
+        // @Test
+        // void testParenthesesWithExponentiation() {
+        //     exprStack.push("2 ^ (3 + 1) * 5");
+
+        //     assertEquals(exprStack.toString(), "(2^(3+1))*5");
+        // }
+
+        @Test
+        void testParenthesesWithNegativeNumbers() {
+            exprStack.push("-5 * (-2 + 3)");
+
+            assertEquals(exprStack.toString(), "(-5*(-2+3))");
+        }
+
+        @Test
+        void testOnlyParenthesesShouldNotChange() {
+            exprStack.push("(((((5)))))");
+
+            assertEquals(exprStack.toString(), "(((((5)))))");
+        }
 
 }

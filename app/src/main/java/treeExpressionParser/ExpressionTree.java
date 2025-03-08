@@ -1,4 +1,6 @@
-package expressionParser;
+package treeExpressionParser;
+
+import expressionParser.Stack;
 
 public class ExpressionTree {
 

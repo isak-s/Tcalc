@@ -2,14 +2,14 @@ package expressionParser;
 
 import java.util.Iterator;
 
-public class Parser {
+public class Expression {
 
     char[] operators = {'+', '-', '/', '*'};
 
     ExpressionStack expressionStack;
     double ans;
 
-    public Parser(String input) {
+    public Expression(String input) {
         expressionStack = new ExpressionStack(input);
     }
 
@@ -20,7 +20,7 @@ public class Parser {
 
     private Double evaluateRecursively(double res, char operator) {
 
-        System.out.print(res + " " + String.valueOf(operator) + " ");
+        // System.out.print(res + " " + String.valueOf(operator) + " ");
 
         if (expressionStack.isEmpty()) {
             System.out.println("Bad expression");
@@ -40,7 +40,6 @@ public class Parser {
         else {
             operand = getNumberFromStack();
         }
-        System.out.println(operand);
 
         res = calculate(res, operator, operand);
 
@@ -77,6 +76,8 @@ public class Parser {
     private Double getNumberFromStack() {
         Character curr = expressionStack.peek();
         if (!Character.isDigit(curr)) {
+            // Check if it is sin, cos or tan
+            // Check h, e, c, etc for constants.
             return null;
         }
 

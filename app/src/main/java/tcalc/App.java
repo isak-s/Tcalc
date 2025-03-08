@@ -5,11 +5,15 @@ package tcalc;
 
 import java.util.Scanner;
 
-import expressionParser.Parser;
+import expressionParser.Expression;
+import treeExpressionParser.ExpressionTree;
 
-import expressionParser.ExpressionTree;
+import java.util.Set;
 
 public class App {
+
+    private static Set<String> escapesStrings = Set.of("q", "Q", "exit", "quit");
+
     public String getGreeting() {
         return "Hello World!";
     }
@@ -17,20 +21,35 @@ public class App {
     public static void main(String[] args) {
 
         Scanner scan = new Scanner(System.in);
-        System.out.println("enter an expression. \n    ");
-        String input = scan.nextLine();
+        String input = "";
 
-        double res = stackImplementation(input);
+        while (!escapesStrings.contains(input)) {
+            System.out.println("enter an expression. \n    ");
+            input = scan.nextLine();
 
-        System.out.println("The result is: " + res);
+            double res = stackImplementation(input);
+
+            System.out.println(" = " + res);
+        }
+
+
         scan.close();
     }
 
     public static double stackImplementation(String input) {
 
-        Parser parser = new Parser(input);
+        double res = 0;
 
-        return parser.evaluate();
+        try {
+            Expression parser = new Expression(input);
+            res = parser.evaluate();
+        }
+        catch(Exception e) {
+            System.out.println("Invalid expression!");
+            System.out.println(e);
+        }
+
+        return res;
     }
 
     public static double treeImplementation(String input) {
