@@ -1,8 +1,11 @@
 package expressionParser;
 
 import java.util.Iterator;
+import constants.Physics;
 
 public class Expression {
+
+    Physics physicsConstants = new Physics();
 
     char[] operators = {'+', '-', '/', '*'};
 
@@ -78,6 +81,10 @@ public class Expression {
         if (!Character.isDigit(curr)) {
             // Check if it is sin, cos or tan
             // Check h, e, c, etc for constants.
+            if (physicsConstants.contains(curr)) {
+                expressionStack.pop();
+                return physicsConstants.getConstant(curr);
+            }
             return null;
         }
 

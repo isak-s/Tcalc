@@ -2,7 +2,11 @@ package expressionParser;
 
 import java.util.Set;
 
+import constants.Physics;
+
 public class ExpressionStack extends Stack<Character> {
+
+    Physics physicsConstants = new Physics();
 
     Set<Character> prioritizedOperators = Set.of('*', '/', '^');
     Set<Character> operators = Set.of('+', '-');
@@ -65,7 +69,7 @@ public class ExpressionStack extends Stack<Character> {
             i++;
         }
         else {
-            while (i >= 0 && Character.isDigit(str.charAt(i))) {
+            while (i >= 0 && (Character.isDigit(str.charAt(i)) || physicsConstants.contains(str.charAt(i)))) {
                 push(str.charAt(i));
                 i--;
             }
