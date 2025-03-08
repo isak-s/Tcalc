@@ -1,10 +1,13 @@
 package expressionParser;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Stack<E> {
+public class Stack<E> implements Iterable<E>{
 
-    public Node<E> first;
+    private int size;
+
+    protected Node<E> first;
 
     public Stack() {
         first = null;
@@ -15,6 +18,7 @@ public class Stack<E> {
 
         newFirst.next = first;
         first = newFirst;
+        size++;
     }
 
     public E pop() throws NoSuchElementException {
@@ -28,6 +32,7 @@ public class Stack<E> {
         }
         E data = first.data;
         first = first.next;
+        size--;
         return data;
     }
 
@@ -52,35 +57,8 @@ public class Stack<E> {
         return sb.toString();
     }
 
-    public void instertClosingParenthesis(E thing) {
-        char closing = ')';
-        char opening = '(';
-
-        Node<E> node = first;
-        if ((char) peek() != '(') {
-            Node<E> newNode = new Node<E>(thing);
-            newNode.next = node.next;
-            node.next = newNode;
-            return;
-        }
-
-        int nbrOfOpenings = 0;
-
-        while (node.next != null) {
-            if (node.data.equals(opening)) {
-                nbrOfOpenings += 1;
-            }
-            else if (node.data.equals(closing)) {
-                nbrOfOpenings -= 1;
-                if (nbrOfOpenings <= 0) {
-                    break;
-                }
-            }
-            node = node.next;
-        }
-        Node<E> newNode = new Node<E>(thing);
-        newNode.next = node.next;
-        node.next = newNode;
+    public int getSize() {
+        return size;
     }
 
 
@@ -96,5 +74,24 @@ public class Stack<E> {
         public boolean hasNext() {
             return next != null;
         }
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new ExpressionStackIterator();
+    }
+
+    private class ExpressionStackIterator implements Iterator<E> {
+
+        @Override
+        public boolean hasNext() {
+            return first != null;
+        }
+
+        @Override
+        public E next() {
+            return pop();
+        }
+
     }
 }

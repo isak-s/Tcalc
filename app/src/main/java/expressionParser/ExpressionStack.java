@@ -1,36 +1,20 @@
 package expressionParser;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
 import java.util.Set;
 
-public class ExpressionStack implements Iterable<Character> {
+public class ExpressionStack extends Stack<Character> {
 
     Set<Character> prioritizedOperators = Set.of('*', '/', '^');
     Set<Character> operators = Set.of('+', '-');
 
-    private Stack<Character> charStack;
-
-    private int size;
-
-
     public ExpressionStack(String str) {
-        size = 0;
-        charStack = new Stack<>();
+        super();
         push(str);
     }
 
     public ExpressionStack() {
-        size = 0;
-        charStack = new Stack<>();
+        super();
     }
-
-    public void push(char c) {
-        size++;
-        charStack.push(c);
-    }
-
 
     public void push(String str) {
         pushChars(str.strip().replace(" ", ""));
@@ -55,12 +39,18 @@ public class ExpressionStack implements Iterable<Character> {
         }
 
     }
-
+    /**
+     * This function encloses an expression, I.E two operands and an operaor in a opeing and closing parenthesis.
+     * All precedence in the recursive parser is handled with parentheses.
+     * This structuring enforces strict ordering of calculations.
+     * @param str
+     * @param i
+     */
     private void parenthesize(String str, int i) {
 
         // Insert the closing parenthesis
 
-        charStack.instertClosingParenthesis(')');
+        instertClosingParenthesis();
 
         // push the operator
         push(str.charAt(i));
@@ -82,46 +72,35 @@ public class ExpressionStack implements Iterable<Character> {
         pushChars(str.substring(0, i + 1));
     }
 
-    @Override
-    public String toString() {
-        return charStack.toString();
-    }
+    public void instertClosingParenthesis() {
+        char closing = ')';
+        char opening = '(';
 
-    public Character pop() throws NoSuchElementException {
-        size--;
-        return charStack.pop();
-    }
-
-    public Character peek() {
-        return charStack.peek();
-    }
-
-    public boolean isEmpty() {
-        return charStack.first == null;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-
-    @Override
-    public Iterator<Character> iterator() {
-        return new ExpressionStackIterator();
-    }
-
-    private class ExpressionStackIterator implements Iterator<Character> {
-
-        @Override
-        public boolean hasNext() {
-            return charStack.first != null;
+        Node<Character> node = first;
+        if ((char) peek() != '(') {
+            Node<Character> newNode = new Node<>(closing);
+            newNode.next = node.next;
+            node.next = newNode;
+            return;
         }
 
-        @Override
-        public Character next() {
-            return charStack.pop();
-        }
+        int nbrOfOpenings = 0;
 
+        while (node.next != null) {
+            if (node.data.equals(opening)) {
+                nbrOfOpenings += 1;
+            }
+            else if (node.data.equals(closing)) {
+                nbrOfOpenings -= 1;
+                if (nbrOfOpenings <= 0) {
+                    break;
+                }
+            }
+            node = node.next;
+        }
+        Node<Character> newNode = new Node<>(closing);
+        newNode.next = node.next;
+        node.next = newNode;
     }
 
 }

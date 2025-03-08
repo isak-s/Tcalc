@@ -1,6 +1,10 @@
 package tcalc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Iterator;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,5 +48,32 @@ public class testStack {
         assertEquals(')', myStack.pop());
 
     }
+    @Test
+    void testIteratorHasNextEmptyStack() {
+        Iterator<Character> itr = myStack.iterator();
+        assertFalse(itr.hasNext());
+    }
+    @Test
+    void testIteratorHasNextPopulatedStack() {
+        Iterator<Character> itr = myStack.iterator();
+        myStack.push(')');
+        assertTrue(itr.hasNext());
+    }
 
+    @Test
+    void testIterator() {
+        myStack.push(')');
+        myStack.push(')');
+        myStack.push(')');
+        myStack.push(')');
+        myStack.push(')');
+        myStack.push(')');
+
+        Iterator<Character> itr = myStack.iterator();
+
+        while (itr.hasNext()) {
+            assertEquals(itr.next(), ')');
+        }
+
+    }
 }
