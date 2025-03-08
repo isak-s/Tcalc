@@ -52,10 +52,30 @@ public class Stack<E> {
         return sb.toString();
     }
 
-    public void instertAfter(E thing, E existingThing) {
+    public void instertClosingParenthesis(E thing) {
+        char closing = ')';
+        char opening = '(';
 
         Node<E> node = first;
-        while (!node.data.equals(existingThing)) {
+        if ((char) peek() != '(') {
+            Node<E> newNode = new Node<E>(thing);
+            newNode.next = node.next;
+            node.next = newNode;
+            return;
+        }
+
+        int nbrOfOpenings = 0;
+
+        while (node.next != null) {
+            if (node.data.equals(opening)) {
+                nbrOfOpenings += 1;
+            }
+            else if (node.data.equals(closing)) {
+                nbrOfOpenings -= 1;
+                if (nbrOfOpenings <= 0) {
+                    break;
+                }
+            }
             node = node.next;
         }
         Node<E> newNode = new Node<E>(thing);

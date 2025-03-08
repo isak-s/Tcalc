@@ -59,13 +59,11 @@ public class ExpressionStack implements Iterable<Character> {
     private void parenthesize(String str, int i) {
 
         // Insert the closing parenthesis
-        if (peek() == '(') {
-            charStack.instertAfter(')', ')');
-        }
-        else {charStack.instertAfter(')', charStack.first.data);}
+
+        charStack.instertClosingParenthesis(')');
 
         // push the operator
-        push(str.charAt(i));                            // REFACTOR
+        push(str.charAt(i));
         i--;
 
         // push the operand

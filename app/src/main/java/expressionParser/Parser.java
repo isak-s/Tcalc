@@ -27,6 +27,11 @@ public class Parser {
             return res;
         }
 
+        if (expressionStack.peek() == ')') {
+            expressionStack.pop();
+            return res;
+        }
+
         double operand;
         if (expressionStack.peek() == '(') {
             expressionStack.pop();
@@ -90,5 +95,9 @@ public class Parser {
             }
         }
         throw new IllegalCallerException("This character does not exist in operators");
+    }
+    @Override
+    public String toString() {
+        return expressionStack.toString();
     }
 }
