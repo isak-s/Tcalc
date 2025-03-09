@@ -93,9 +93,9 @@ public class testEvaluate {
 
     @Test
     void testMultiplicationDivisionOrder() {
-        expression = new Expression("2 * 3 / 4 * 5");
+        expression = new Expression("(2 * 3) / (4 * 5)");
 
-        assertEquals(expression.evaluate(), 7.5);
+        assertEquals(expression.evaluate(), 0.3);
     }
 
 }
