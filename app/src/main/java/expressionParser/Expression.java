@@ -5,7 +5,7 @@ import constants.MathUtils;
 
 public class Expression {
 
-    char[] operators = {'+', '-', '/', '*'};
+    char[] operators = {'+', '-', '/', '*', '^'};
 
     ExpressionStack expressionStack;
     double ans;

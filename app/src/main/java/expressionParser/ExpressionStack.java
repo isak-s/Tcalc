@@ -73,9 +73,8 @@ public class ExpressionStack extends Stack<Character> {
             i++;
         }
         else {
-            char c = str.charAt(i);
-            while (i >= 0 && (Character.isDigit(c) ||
-                              MathUtils.containsConstant(c) // || MathUtils.containsFunction(c)
+            while (i >= 0 && (Character.isDigit(str.charAt(i)) ||
+                              MathUtils.containsConstant(str.charAt(i)) // || MathUtils.containsFunction(c)
                               )) {
                 push(str.charAt(i));
                 i--;

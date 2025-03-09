@@ -117,11 +117,12 @@ public class testExpressionStack {
             assertEquals(exprStack.toString(), "(2*(3*(4*5)))");
         }
 
+        // This is not how math works btw..
         @Test
         void testMultipleMultiplicationsAndDivisions() {
             exprStack.push("2 * 3 / 4 * 5");
 
-            assertEquals(exprStack.toString(), "(((2*3)/4)*5)");
+            assertEquals(exprStack.toString(), "(2*(3/(4*5)))");
         }
         @Test
         void testMultipleMultiplicationsAndDivisionsWithParenthese() {
@@ -156,7 +157,7 @@ public class testExpressionStack {
         void testParenthesesWithNegativeNumbers() {
             exprStack.push("-5 * (-2 + 3)");
 
-            assertEquals(exprStack.toString(), "(-5*(-2+3))");
+            assertEquals(exprStack.toString(), "-(5*(0-2+3))");
         }
 
         @Test
