@@ -1,11 +1,9 @@
 package expressionParser;
 
 import java.util.Iterator;
-import constants.Physics;
+import constants.MathUtils;
 
 public class Expression {
-
-    Physics physicsConstants = new Physics();
 
     char[] operators = {'+', '-', '/', '*'};
 
@@ -41,7 +39,7 @@ public class Expression {
             operand = evaluateRecursively(0, '+');
         }
         else {
-            operand = getNumberFromStack();
+            operand = getOperandFromStack();
         }
 
         res = calculate(res, operator, operand);
@@ -75,19 +73,38 @@ public class Expression {
         }
 
     }
-
-    private Double getNumberFromStack() {
+    /**
+     * Fetches the next operand in the stack.
+     *  The next operand can also be the result of a math function such as sin, cos or tan.
+     * @return
+     */
+    private Double getOperandFromStack() {
         Character curr = expressionStack.peek();
         if (!Character.isDigit(curr)) {
             // Check if it is sin, cos or tan
             // Check h, e, c, etc for constants.
-            if (physicsConstants.contains(curr)) {
+            if (MathUtils.containsConstant(curr)) {
                 expressionStack.pop();
-                return physicsConstants.getConstant(curr);
+                return MathUtils.getConstant(curr);
+            }
+            else if (MathUtils.containsFunction(curr)) {
+                char function = curr;
+                expressionStack.pop(); // Pops the funciton
+                if (expressionStack.peek() != '(') {
+                    throw new IllegalArgumentException();
+                }
+                expressionStack.pop(); // pops the opening parenthesis
+                double res = MathUtils.calculateFunction(function, getOperandFromStack());
+                expressionStack.pop(); // pops the closing parenthesis
+                return res;
             }
             return null;
         }
 
+        return getNumberFromStack();
+    }
+
+    private double getNumberFromStack() {
         double num = 0;
         Iterator<Character> itr = expressionStack.iterator();
         while(itr.hasNext() && Character.isDigit(expressionStack.peek())) {
@@ -95,6 +112,7 @@ public class Expression {
         }
         return num;
     }
+
     private char getOperatorFromStack() {
         char expresson = expressionStack.pop();
         for (char o : operators) {

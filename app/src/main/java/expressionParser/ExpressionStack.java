@@ -2,11 +2,11 @@ package expressionParser;
 
 import java.util.Set;
 
-import constants.Physics;
+import constants.MathUtils;
+
 
 public class ExpressionStack extends Stack<Character> {
 
-    Physics physicsConstants = new Physics();
 
     Set<Character> prioritizedOperators = Set.of('*', '/', '^');
     Set<Character> operators = Set.of('+', '-');
@@ -24,7 +24,11 @@ public class ExpressionStack extends Stack<Character> {
     }
 
     public void push(String str) {
-        pushChars(str.strip().replace(" ", ""));
+        str = MathUtils.convertSymbols(
+            str.strip().replace(" ", "")
+            );
+
+        pushChars(str);
     }
     /**
      * Pushes the string into the charstack in reverse order.
@@ -69,7 +73,10 @@ public class ExpressionStack extends Stack<Character> {
             i++;
         }
         else {
-            while (i >= 0 && (Character.isDigit(str.charAt(i)) || physicsConstants.contains(str.charAt(i)))) {
+            char c = str.charAt(i);
+            while (i >= 0 && (Character.isDigit(c) ||
+                              MathUtils.containsConstant(c) // || MathUtils.containsFunction(c)
+                              )) {
                 push(str.charAt(i));
                 i--;
             }
@@ -88,9 +95,11 @@ public class ExpressionStack extends Stack<Character> {
 
     public void instertClosingParenthesis() {
 
+        Node<Character> newNode = new Node<>(closing);
         Node<Character> node = first;
-        if ((char) peek() != '(') {
-            Node<Character> newNode = new Node<>(closing);
+
+        if ((char) peek() != '(' && (!MathUtils.containsFunction(node.data))) {
+
             while(node.next != null && Character.isDigit(node.next.data)){
                 node = node.next;
             }
@@ -105,6 +114,9 @@ public class ExpressionStack extends Stack<Character> {
             if (node.data.equals(opening)) {
                 nbrOfOpenings += 1;
             }
+            else if (MathUtils.containsFunction(node.data)) {
+                // pass
+            }
             else if (node.data.equals(closing)) {
                 nbrOfOpenings -= 1;
                 if (nbrOfOpenings <= 0) {
@@ -113,7 +125,6 @@ public class ExpressionStack extends Stack<Character> {
             }
             node = node.next;
         }
-        Node<Character> newNode = new Node<>(closing);
         newNode.next = node.next;
         node.next = newNode;
     }
