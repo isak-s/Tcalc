@@ -122,6 +122,10 @@ public class Expression {
         }
         throw new IllegalCallerException("This character does not exist in operators");
     }
+
+    protected void overrideExpressionStack(ExpressionStack expressionStack) {
+        this.expressionStack = expressionStack;
+    }
     @Override
     public String toString() {
         return expressionStack.toString();

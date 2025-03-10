@@ -149,4 +149,18 @@ public class ExpressionStack extends Stack<Character> {
         return sb.toString();
     }
 
+    public ExpressionStack deepCopy() {
+        ExpressionStack clone = new ExpressionStack();
+        ExpressionStack tmp = new ExpressionStack();
+        // tmp gets a reversed order
+        for (char data : this) {
+            tmp.push(data);
+        }
+        // reversed back
+        for (char data : tmp) {
+            clone.push(data);
+        }
+        return clone;
+    }
+
 }

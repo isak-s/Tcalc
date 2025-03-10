@@ -38,7 +38,11 @@ public class MathUtils {
             replace("cos", "ℂ").
             replace("tan", "t").
             replace("pi", "p").
-            replace("(-", "(0-");  // Handles negative numbers
+            replace("(-", "(0-").  // Handles negative numbers
+            // These insert * in between operands that are adjacent to each other.
+            replaceAll("(?<=[0-9pℂht])(?=[pℂht(])", "*"). // Number/constant followed by constant or '('
+            replaceAll("(?<=\\))(?=[0-9pℂht])", "*").    // ')' followed by number/constant
+            replaceAll("(?<=\\))(?=\\()", "*"); // ) followed by (
     }
 
     public static double calculateFunction(char function, double operand) {
