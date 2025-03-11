@@ -34,7 +34,7 @@ public class FunctionStepper implements Iterable<Double> {
     private class FunctionIterator implements Iterator<Double> {
         @Override
         public boolean hasNext() {
-            return pos <= stopX;
+            return pos + step <= stopX;
         }
         @Override
         public Double next() {
