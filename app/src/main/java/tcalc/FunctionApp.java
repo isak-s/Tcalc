@@ -19,7 +19,7 @@ public class FunctionApp {
         while (!escapesStrings.contains(input)) {
             System.out.print("enter an expression: ");
             input = scan.nextLine();
-            System.out.print("enter a starting x value: ");
+            System.out.print("enter a starting x value: "); // TODO: Negative starting values
             double startX = scan.nextDouble();
             scan.nextLine();
             System.out.print("enter a limit x value: ");
@@ -45,8 +45,6 @@ public class FunctionApp {
             }
 
         }
-
-
         scan.close();
     }
 }

@@ -69,16 +69,16 @@ public class Graph {
                 minY = (y < minY) ? y : minY;
                 maxY = (y > maxY) ? y : maxY;
 
-                double x = p.getX();
-                minX = (x < minX) ? x : minX;
-                maxX = (x > maxX) ? x : maxX;
+                // double x = p.getX();
+                // minX = (x < minX) ? x : minX;
+                // maxX = (x > maxX) ? x : maxX;
             }
             // Adjust so that the highest and lowest points aren't on the edge of the window.
             // this.minY *= 1.05;
             // this.maxY *= 1.05;
 
-            this.scaleY = (maxY - Math.abs(minY)) / (double) height;
-            this.scaleX = (maxX - Math.abs(minX)) / (double) width;
+            this.scaleY = (double) height / (maxY - Math.abs(minY));
+            this.scaleX = (double) width / (maxX - Math.abs(minX));
 
             Border blackBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
             this.setBorder(blackBorder);
