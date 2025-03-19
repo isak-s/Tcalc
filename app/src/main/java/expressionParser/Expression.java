@@ -15,7 +15,7 @@ public class Expression {
     }
 
     public Double evaluate() {
-        System.out.println(expressionStack);
+        //System.out.println(expressionStack);
         return evaluateRecursively(0, '+');
     }
 

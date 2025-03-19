@@ -34,10 +34,21 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'tcalc.App'
+    mainClass = 'tcalc.FunctionApp'
 }
 
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+run {
+    standardInput = System.in
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'tcalc.FunctionApp'  // The entry point class of your application
+        )
+    }
 }

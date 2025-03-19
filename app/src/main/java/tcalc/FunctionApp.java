@@ -13,31 +13,53 @@ public class FunctionApp {
     private static Set<String> escapesStrings = Set.of("q", "Q", "exit", "quit");
     public static void main(String[] args) {
 
-        Scanner scan = new Scanner(System.in);
-        String input = "";
+        LinkedList<Point> coordinates = new LinkedList<>();
 
-        while (!escapesStrings.contains(input)) {
-            System.out.print("enter an expression: ");
-            input = scan.nextLine();
-            System.out.print("enter a starting x value: ");
-            double startX = scan.nextDouble();
-            scan.nextLine();
-            System.out.print("enter a limit x value: ");
-            double stopX = scan.nextDouble();
-            scan.nextLine();
-            System.out.print("enter a step size: ");
-            double step = scan.nextDouble();
-            scan.nextLine();
+        if (args.length == 4) {
 
-            LinkedList<Point> coordinates = new LinkedList<>();
+            String expression = args[0];
+            Double startX = Double.valueOf(args[1]);
+            Double stopX = Double.valueOf(args[2]);
+            Double step = Double.valueOf(args[3]);
 
             try {
-                FunctionStepper fs = new FunctionStepper(input, startX, stopX, step);
+                FunctionStepper fs = new FunctionStepper(expression, startX, stopX, step);
                 for (double res : fs) {
                     coordinates.push(new Point(fs.getPos(), res));
                     // System.out.println("Result for x = " + fs.getPos() + " : " + res);
                 }
-                new Graph(coordinates, input);
+                new Graph(coordinates, expression);
+                Thread.sleep(2000);
+            }
+            catch(Exception e) {
+                System.out.println(e);
+            }
+
+        }
+        else {
+            Scanner scan = new Scanner(System.in);
+            String expression = "";
+
+            while (!escapesStrings.contains(expression)) {
+                System.out.print("enter an expression: ");
+                expression = scan.nextLine();
+                System.out.print("enter a starting x value: ");
+                double startX = scan.nextDouble();
+                scan.nextLine();
+                System.out.print("enter a limit x value: ");
+                double stopX = scan.nextDouble();
+                scan.nextLine();
+                System.out.print("enter a step size: ");
+                double step = scan.nextDouble();
+                scan.nextLine();
+
+            try {
+                FunctionStepper fs = new FunctionStepper(expression, startX, stopX, step);
+                for (double res : fs) {
+                    coordinates.push(new Point(fs.getPos(), res));
+                    // System.out.println("Result for x = " + fs.getPos() + " : " + res);
+                }
+                new Graph(coordinates, expression);
                 Thread.sleep(2000);
             }
             catch(Exception e) {
@@ -46,5 +68,6 @@ public class FunctionApp {
 
         }
         scan.close();
+    }
     }
 }
