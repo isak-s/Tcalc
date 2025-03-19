@@ -42,7 +42,8 @@ public class MathUtils {
             // These insert * in between operands that are adjacent to each other.
             replaceAll("(?<=[0-9pch])(?=[pch(])", "*"). // Number/constant followed by constant or '('
             replaceAll("(?<=\\))(?=[0-9pch])", "*").    // ')' followed by number/constant
-            replaceAll("(?<=\\))(?=\\()", "*"); // ) followed by (
+            replaceAll("(?<=\\))(?=\\()", "*"). // ) followed by (
+            replaceAll("(?<=\\d|\\))(?=[cts])", "*");    // ')' or number followed by function
     }
 
     public static double calculateFunction(char function, double operand) {

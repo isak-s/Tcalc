@@ -110,6 +110,14 @@ public class Expression {
         while(itr.hasNext() && Character.isDigit(expressionStack.peek())) {
             num = num * 10 +  Character.getNumericValue(itr.next());
         }
+        if (expressionStack.peek() == '.') {
+            itr.next();
+            double i = 1;
+            while(itr.hasNext() && Character.isDigit(expressionStack.peek())) {
+                num += Character.getNumericValue(itr.next()) / (10.0 * i);
+                i++;
+            }
+        }
         return num;
     }
 

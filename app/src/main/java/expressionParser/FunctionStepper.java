@@ -38,7 +38,7 @@ public class FunctionStepper implements Iterable<Double> {
         }
         @Override
         public Double next() {
-            Expression expression = new Expression(input.replace("x", "(" + String.valueOf((int) pos) + ")"));
+            Expression expression = new Expression(input.replace("x", "(" + String.valueOf(pos) + ")"));
             pos += step;
             return expression.evaluate();
         }
