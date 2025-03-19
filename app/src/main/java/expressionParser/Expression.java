@@ -110,7 +110,7 @@ public class Expression {
         while(itr.hasNext() && Character.isDigit(expressionStack.peek())) {
             num = num * 10 +  Character.getNumericValue(itr.next());
         }
-        if (expressionStack.peek() == '.') {
+        if (itr.hasNext() && expressionStack.peek() == '.') {
             itr.next();
             double i = 1;
             while(itr.hasNext() && Character.isDigit(expressionStack.peek())) {

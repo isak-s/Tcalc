@@ -35,7 +35,7 @@ public class FunctionApp {
                 FunctionStepper fs = new FunctionStepper(input, startX, stopX, step);
                 for (double res : fs) {
                     coordinates.push(new Point(fs.getPos(), res));
-                    System.out.println("Result for x = " + fs.getPos() + " : " + res);
+                    // System.out.println("Result for x = " + fs.getPos() + " : " + res);
                 }
                 new Graph(coordinates, input);
                 Thread.sleep(2000);

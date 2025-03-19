@@ -10,7 +10,7 @@ import treeExpressionParser.ExpressionTree;
 
 import java.util.Set;
 
-public class App {
+public class CalculatorApp {
 
     private static Set<String> escapesStrings = Set.of("q", "Q", "exit", "quit");
 
