@@ -20,8 +20,16 @@ public class CalculatorApp {
 
     public static void main(String[] args) {
 
-        Scanner scan = new Scanner(System.in);
         String input = "";
+
+        if (args.length == 1) {
+            input = args[0];
+            double res = stackImplementation(input);
+
+            System.out.println(" = " + res);
+        }
+
+        Scanner scan = new Scanner(System.in);
 
         while (!escapesStrings.contains(input)) {
             System.out.println("enter an expression. \n    ");
