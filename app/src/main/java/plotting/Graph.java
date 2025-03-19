@@ -32,12 +32,12 @@ public class Graph {
         JFrame frame = new JFrame(title);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(width, height);
-        GraphPanel graphPanel = new GraphPanel(coordinates, width - 100, height - 100);
-        graphPanel.setPreferredSize(new Dimension(width - 100, height - 100));
+        GraphPanel graphPanel = new GraphPanel(coordinates, width, height);
+        graphPanel.setPreferredSize(new Dimension(width, height));
 
         frame.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         frame.add(graphPanel, BorderLayout.CENTER);
-        // frame.pack();
+        frame.pack();
         frame.setVisible(true);
     }
 
@@ -77,8 +77,8 @@ public class Graph {
             // this.minY *= 1.05;
             // this.maxY *= 1.05;
 
-            this.scaleY = (double) height / (maxY - Math.abs(minY));
-            this.scaleX = (double) width / (maxX - Math.abs(minX));
+            this.scaleY = (double) height / (maxY - minY);
+            this.scaleX = (double) width / (maxX - minX);
 
             Border blackBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
             this.setBorder(blackBorder);
@@ -92,7 +92,6 @@ public class Graph {
             g.setColor(Color.black);
 
             Graphics2D g2 = (Graphics2D) g;
-            g2.setColor(Color.RED);
 
             drawXandYaxis(g);
 
@@ -101,16 +100,23 @@ public class Graph {
         }
 
         private void drawXandYaxis(Graphics g) {
-            for (int i = 0; i < 10; i++) {
-                int yAxisineHeight = (int) (this.height / 10 ) * i;
-                int xAxisineHeight = (int) (this.width / 10 ) * i;
-                g.drawLine(0, yAxisineHeight, 10, yAxisineHeight);
-                g.drawLine(xAxisineHeight, height, xAxisineHeight, height - 10);
+            // Draw X-axis only if y=0 is within range
+            g.setColor(Color.BLACK);
+            if (minY <= 0 && maxY >= 0) {
+                int xAxisY = (int) ((maxY - 0) * scaleY);
+                g.drawLine(0, xAxisY, width, xAxisY);
+            }
+
+            // Draw Y-axis only if x=0 is within range
+            if (minX <= 0 && maxX >= 0) {
+                int yAxisX = (int) ((0 - minX) * scaleX);
+                g.drawLine(yAxisX, 0, yAxisX, height);
             }
 
         }
 
         private void drawPoints(Graphics2D g2) {
+            g2.setColor(Color.RED);
             Iterator<Point> itr = coordinates.iterator();
             Point previous = itr.next();
             while (itr.hasNext()) {
@@ -118,6 +124,7 @@ public class Graph {
                 // get point to scale for the window
                 int x = curr.getScaledX(minX, scaleX);
                 int y = height - curr.getScaledY(minY, scaleY);
+
                 // draw current point.
                 g2.fill(new Ellipse2D.Double(x, y, 5, 5));
                 // On hover, display getX() and getY()
