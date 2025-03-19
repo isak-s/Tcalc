@@ -7,8 +7,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.border.Border;
 
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 
 import java.awt.BorderLayout;
@@ -17,7 +19,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Ellipse2D;
 
 public class Graph {
@@ -51,6 +52,7 @@ public class Graph {
         private double scaleY;
         private double scaleX;
         private int width, height;
+        private String tooltipText = "";
 
 
         public GraphPanel(LinkedList<Point> coordinates, int width, int height) {
@@ -68,10 +70,6 @@ public class Graph {
                 double y = p.getY();
                 minY = (y < minY) ? y : minY;
                 maxY = (y > maxY) ? y : maxY;
-
-                // double x = p.getX();
-                // minX = (x < minX) ? x : minX;
-                // maxX = (x > maxX) ? x : maxX;
             }
             // Adjust so that the highest and lowest points aren't on the edge of the window.
             // this.minY *= 1.05;
@@ -83,6 +81,19 @@ public class Graph {
             Border blackBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
             this.setBorder(blackBorder);
 
+            // add tooltip to display information when hovering points.
+            ToolTipManager.sharedInstance().registerComponent(this);
+
+            // Add mouse motion listener to track hover
+            addMouseMotionListener(new MouseMotionAdapter() {
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                    checkHover(e.getX(), e.getY());
+                }
+            });
+
+            // Show tooltip instantly
+            ToolTipManager.sharedInstance().setInitialDelay(0);
         }
 
 
@@ -136,6 +147,21 @@ public class Graph {
 
                 previous = curr;
             }
+        }
+
+        private void checkHover(int mouseX, int mouseY) {
+            for (Point p : coordinates) {
+                int x = p.getScaledX(minX, scaleX);
+                int y = height - p.getScaledY(minY, scaleY);
+
+                if (Math.abs(mouseX - x) < 10 && Math.abs(mouseY - y) < 10) { // If close to a point
+                    tooltipText = "X: " + p.getX() + ", Y: " + p.getY();
+                    setToolTipText(tooltipText); // Display tooltip
+
+                    return;
+                }
+            }
+            setToolTipText(null); // Remove tooltip when not hovering over a point
         }
     }
 
