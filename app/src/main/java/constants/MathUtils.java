@@ -40,8 +40,8 @@ public class MathUtils {
             replace("pi", "p").
             replace("(-", "(0-").  // Handles negative numbers
             // These insert * in between operands that are adjacent to each other.
-            replaceAll("(?<=[0-9pℂht])(?=[pℂht(])", "*"). // Number/constant followed by constant or '('
-            replaceAll("(?<=\\))(?=[0-9pℂht])", "*").    // ')' followed by number/constant
+            replaceAll("(?<=[0-9pch])(?=[pch(])", "*"). // Number/constant followed by constant or '('
+            replaceAll("(?<=\\))(?=[0-9pch])", "*").    // ')' followed by number/constant
             replaceAll("(?<=\\))(?=\\()", "*"); // ) followed by (
     }
 

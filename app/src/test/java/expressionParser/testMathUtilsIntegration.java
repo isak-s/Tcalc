@@ -46,5 +46,10 @@ public class testMathUtilsIntegration {
         expression = new Expression("cos(sin(tan(0)))");
         assertEquals(1, expression.evaluate());
     }
+    @Test
+    void testDivisionWithinMathFunction() {
+        expression = new Expression("cos(720/2)");
+        assertEquals(1, expression.evaluate());
+    }
 
 }

@@ -94,8 +94,8 @@ public class Expression {
                     throw new IllegalArgumentException();
                 }
                 expressionStack.pop(); // pops the opening parenthesis
-                double res = MathUtils.calculateFunction(function, getOperandFromStack());
-                expressionStack.pop(); // pops the closing parenthesis
+                double res = MathUtils.calculateFunction(function, evaluateRecursively(0, '+'));
+                // expressionStack.pop(); // pops the closing parenthesis
                 return res;
             }
             return null;
